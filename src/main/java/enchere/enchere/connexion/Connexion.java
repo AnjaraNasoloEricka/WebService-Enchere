@@ -18,7 +18,7 @@ public class Connexion {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://containers-us-west-157.railway.app:6797/" + dbname,
+                    "jdbc:postgresql://containers-us-west-181.railway.app:5844/" + dbname,
                     utilisateur, mdp);
         } catch (Exception e) {
             e.printStackTrace();
@@ -28,7 +28,7 @@ public class Connexion {
 
     public static Connection getConnection() {
         Connexion c = new Connexion();
-        Connection connect = c.getconnect("railway", "postgres", "s44VhxaI0Zw80QBy62uW");
+        Connection connect = c.getconnect("railway", "postgres", "rjcclFEBbleYLv2Ihavx");
         return connect;
     }
 }
