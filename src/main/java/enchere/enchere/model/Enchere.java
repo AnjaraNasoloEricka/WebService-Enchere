@@ -22,7 +22,7 @@ import enchere.enchere.connexion.Connexion;
 import enchere.enchere.repository.EnchereRepository;
 
 @Entity
-@Table(name = "enchere")
+@Table(name = "v_enchere")
 public class Enchere {
     private long id;
     private String nomproduit;
@@ -34,6 +34,7 @@ public class Enchere {
     private Utilisateur utilisateurgagnant;
     private double prixmin;
     private double prix;
+    private String base8;
 
     public Enchere() {
     }
@@ -157,6 +158,15 @@ public class Enchere {
 
     public void setDatefin(Timestamp datefin) {
         this.datefin = datefin;
+    }
+
+    @Column(name = "base8", nullable = false)
+    public String getBase8() {
+        return base8;
+    }
+
+    public void setBase8(String base8) {
+        this.base8 = base8;
     }
 
     public String setSQLwithDate(String sql, Date[] date) {

@@ -21,8 +21,10 @@ public class EnchereController {
     private EnchereRepository enchereRepository;
 
     @GetMapping("")
-    public List<Enchere> getAllEnchere() {
-        return enchereRepository.findAll();
+    public Map<String, Object> getAllEnchere() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("data", enchereRepository.findAll());
+        return map;
     }
 
     @GetMapping("/search")
