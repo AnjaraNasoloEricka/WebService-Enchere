@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class UtilisateurController {
     @Autowired
     private UtilisateurRepository uRepository;
 
-    @GetMapping
+    @PostMapping
     public Map<String, Object> logins(@RequestBody Utilisateur utilisateur) {
         Map<String, Object> map = new HashMap<String, Object>();
         Utilisateur u = uRepository.login(utilisateur);
