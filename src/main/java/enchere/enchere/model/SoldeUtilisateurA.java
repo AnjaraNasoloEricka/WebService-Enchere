@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 import enchere.enchere.connexion.Connexion;
 
@@ -66,18 +68,19 @@ public class SoldeUtilisateurA {
     }
 
     public static double mySoldeUser(int id) throws Exception {
-        PreparedStatement stat = null;
+        Statement stat = null;
         Connection co = null;
         double solde = 0;
 
         try {
             co = Connexion.getConnection();
-            String requete = "SELECT SUM(solde) FROM soldeutilisateur WHERE idutilisateur = ? AND statut = 1";
-            stat = co.prepareStatement(requete);
-            stat.setInt(1, id);
+            String sql = "SELECT SUM(solde) as somme FROM soldeutilisateur WHERE idutilisateur = ? AND statut = 1";
+            stat = co.createStatement();
+            ResultSet rs = stat.executeQuery(sql);
+            if (rs.next()) {
+                solde = rs.getDouble("somme");
+            }
 
-            solde = stat.executeQuery().getDouble(1);
-            System.out.println(solde);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
