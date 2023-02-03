@@ -37,7 +37,7 @@ public class SoldeUtilisateurControllerA {
     public Map<String, Object> getSumSoldeUser(@PathVariable int id) {
         Map<String, Object> mymap = new HashMap<String, Object>();
         try {
-            mymap.put("erreur", new Double(SoldeUtilisateurA.mySoldeUser(id)));
+            mymap.put("data", new Double(SoldeUtilisateurA.mySoldeUser(id)));
         } catch (Exception e) {
             mymap.put("erreur", new ErrorJson(500, e.getMessage()));
         }

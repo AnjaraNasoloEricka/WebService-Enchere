@@ -77,6 +77,7 @@ public class SoldeUtilisateurA {
             stat.setInt(1, id);
 
             solde = stat.executeQuery().getDouble(1);
+            System.out.println(solde);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
