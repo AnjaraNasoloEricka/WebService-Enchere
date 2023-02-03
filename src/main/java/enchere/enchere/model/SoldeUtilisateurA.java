@@ -65,6 +65,29 @@ public class SoldeUtilisateurA {
         this.statut = statut;
     }
 
+    public static double mySoldeUser(int id) throws Exception {
+        PreparedStatement stat = null;
+        Connection co = null;
+        double solde = 0;
+
+        try {
+            co = Connexion.getConnection();
+            String requete = "SELECT SUM(solde) FROM soldeutilisateur WHERE idutilisateur = ? AND statut = 1";
+            stat = co.prepareStatement(requete);
+            stat.setInt(1, id);
+
+            stat.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stat != null) {
+                stat.close();
+            }
+            co.close();
+        }
+        return solde;
+    }
+
     public static void insertSoldeUtilisateurA(SoldeUtilisateurA ctg) throws Exception {
         PreparedStatement stat = null;
         Connection co = null;
