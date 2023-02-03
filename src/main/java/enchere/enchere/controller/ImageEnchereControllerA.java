@@ -23,7 +23,7 @@ public class ImageEnchereControllerA {
     public Map<String, Object> insertImageEnchereA(@RequestBody ImageEnchereA ctg) throws SQLException {
         Map<String, Object> mymap = new HashMap<String, Object>();
         try {
-            ImageEnchereA.insertImageEnchereA(ctg);
+            new ImageEnchereA().insertImageEnchereA(ctg);
             mymap.put("success", new ErrorJson(200, "Image inseree"));
         } catch (Exception ex) {
             mymap.put("erreur", new ErrorJson(500, "Une erreur s'est produite lors de l'insertion de l'image"));

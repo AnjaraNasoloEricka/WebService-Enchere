@@ -127,4 +127,21 @@ public class HistoriqueEnchere {
 
         return true;
     }
+
+    public static String knowAllUser(List<HistoriqueEnchere> ls) {
+        String tab = "[\"0\"";
+        if (ls.size() != 0) {
+            int idenchere = ls.get(0).getIdutilisateur();
+            tab += ",\"" + idenchere + "\"";
+            for (HistoriqueEnchere historique : ls) {
+                if (historique.getIdenchere() != idenchere) {
+                    tab += "," + historique.getIdenchere();
+                    idenchere = historique.getIdenchere();
+                }
+            }
+        }
+        tab += "]";
+        return tab;
+    }
+
 }

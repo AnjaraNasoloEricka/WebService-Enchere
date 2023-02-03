@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import enchere.enchere.exception.ErrorJson;
 import enchere.enchere.model.EnchereA;
+import enchere.enchere.model.ImageEnchereA;
 
 @RestController
 @CrossOrigin("*")
@@ -23,10 +24,11 @@ public class EnchereControllerA {
     public ResponseEntity<?> insertEnchere(@RequestBody EnchereA ctg) throws SQLException {
         Map<String, Object> mymap = new HashMap<String, Object>();
         try {
-            EnchereA.insertEnchere(ctg);
+            ctg.insertEnchere(ctg);
             mymap.put("success", new ErrorJson(200, "Enchere bien ajoutee"));
+
         } catch (Exception ex) {
-            mymap.put("erreur", new ErrorJson(500, "Une erreur s'est produite lors de l'inscription"));
+            mymap.put("erreur", new ErrorJson(500, ex.getMessage()));
         }
         return new ResponseEntity<>(mymap, HttpStatus.OK);
     }

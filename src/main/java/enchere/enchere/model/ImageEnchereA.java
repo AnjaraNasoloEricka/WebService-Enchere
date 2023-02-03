@@ -44,23 +44,22 @@ public class ImageEnchereA {
         this.base8 = base8;
     }
 
-    public static void insertImageEnchereA(ImageEnchereA ctg) throws Exception{
+    public void insertImageEnchereA(ImageEnchereA ctg) throws Exception {
         PreparedStatement stat = null;
         Connection co = null;
 
-        try{
+        try {
             co = Connexion.getConnection();
             String requete = "INSERT INTO ImageEnchere VALUES(default,?,?)";
             stat = co.prepareStatement(requete);
             stat.setInt(1, ctg.getIdEnchere());
             stat.setString(2, ctg.getBase8());
-            
+
             stat.executeUpdate();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally{
-            if(stat != null){
+        } finally {
+            if (stat != null) {
                 stat.close();
             }
             co.close();

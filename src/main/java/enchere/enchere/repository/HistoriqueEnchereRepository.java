@@ -16,4 +16,7 @@ public interface HistoriqueEnchereRepository extends MongoRepository<HistoriqueE
     @Query("{idutilisateur:?0}")
     List<HistoriqueEnchere> findByUser(int idutilisateur);
 
+    @Query("{idenchere:?0}")
+    List<HistoriqueEnchere> findByEnchere(int idenchere);
+
 }

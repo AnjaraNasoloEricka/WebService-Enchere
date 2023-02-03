@@ -2,7 +2,9 @@ package enchere.enchere.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 
 import enchere.enchere.connexion.Connexion;
@@ -18,6 +20,15 @@ public class EnchereA {
     private int idutilisateurgagnant;
     private double prixmin;
     private double prix;
+    private ImageEnchereA[] allimage;
+
+    public ImageEnchereA[] getAllimage() {
+        return allimage;
+    }
+
+    public void setAllimage(ImageEnchereA[] allimage) {
+        this.allimage = allimage;
+    }
 
     public long getId() {
         return id;
@@ -116,26 +127,64 @@ public class EnchereA {
         this.prix = prix;
     }
 
-    public static void insertEnchere(EnchereA ctg) throws Exception {
+    // function get Last Enchere From Database
+    public EnchereA getLastEnchere() throws Exception {
+        Connection co = null;
+        EnchereA enchere = new EnchereA();
+        try {
+            co = Connexion.getConnection();
+            String requete = "SELECT * FROM enchere ORDER BY id DESC LIMIT 1";
+            Statement stat = co.createStatement();
+            ResultSet result = stat.executeQuery(requete);
+            if (result.next()) {
+                enchere.setId(result.getLong("id"));
+                enchere.setNomproduit(result.getString("nomproduit"));
+                enchere.setStatut(result.getInt("statut"));
+                enchere.setDatedebut(result.getTimestamp("datedebut"));
+                enchere.setDatefin(result.getTimestamp("datefin"));
+                enchere.setIdutilisateur(result.getInt("idutilisateur"));
+                enchere.setIdcategorie(result.getInt("idcategorie"));
+                enchere.setIdutilisateurgagnant(result.getInt("idutilisateurgagnant"));
+                enchere.setPrixmin(result.getDouble("prixmin"));
+                enchere.setPrix(result.getDouble("prix"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            co.close();
+        }
+        return enchere;
+
+    }
+
+    public void insertAllImage() throws Exception {
+        EnchereA current = this.getLastEnchere();
+        for (ImageEnchereA imageEnchereA : allimage) {
+            imageEnchereA.setIdEnchere((int) current.getId());
+            imageEnchereA.insertImageEnchereA(imageEnchereA);
+        }
+    }
+
+    public void insertEnchere(EnchereA ctg) throws Exception {
         PreparedStatement stat = null;
         Connection co = null;
 
         try {
             co = Connexion.getConnection();
-            String requete = "INSERT INTO enchere VALUES(default,?,?,?,?,?,?,?,?,?)";
+            String requete = "INSERT INTO enchere(id,idcategorie,idutilisateur,nomproduit,datedebut,datefin,prixmin,prix,statut) VALUES(default,?,?,?,?,?,?,?,?)";
             stat = co.prepareStatement(requete);
             stat.setInt(1, ctg.getIdcategorie());
             stat.setInt(2, ctg.getIdutilisateur());
             stat.setString(3, ctg.getNomproduit());
             stat.setTimestamp(4, ctg.getDatedebut());
             stat.setTimestamp(5, ctg.getDatefin());
-            stat.setInt(6, ctg.getIdutilisateurgagnant());
-            stat.setDouble(7, ctg.getPrixmin());
-            stat.setDouble(8, ctg.getPrix());
-            stat.setInt(9, ctg.getStatut());
+            stat.setDouble(6, ctg.getPrixmin());
+            stat.setDouble(7, ctg.getPrix());
+            stat.setInt(8, ctg.getStatut());
             stat.executeUpdate();
+            insertAllImage();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new Exception(e.getMessage());
         } finally {
             if (stat != null) {
                 stat.close();

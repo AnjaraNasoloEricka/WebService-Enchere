@@ -17,9 +17,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import enchere.enchere.connexion.Connexion;
 import enchere.enchere.repository.EnchereRepository;
+import enchere.enchere.repository.HistoriqueEnchereRepository;
+import enchere.enchere.service.SignalService;
 
 @Entity
 @Table(name = "enchere")
@@ -34,6 +37,33 @@ public class Enchere {
     private Utilisateur utilisateurgagnant;
     private double prixmin;
     private double prix;
+
+    @Transient
+    private List<ImageEnchereA> allimage;
+
+    public List<ImageEnchereA> initAllImageEnchere() throws Exception {
+        List<ImageEnchereA> allimage = new ArrayList<ImageEnchereA>();
+        Connection conn = Connexion.getConnection();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM imageenchere WHERE idenchere = " + this.id);
+        while (rs.next()) {
+            ImageEnchereA image = new ImageEnchereA();
+            image.setId(rs.getInt("id"));
+            image.setBase8(rs.getString("base8"));
+            image.setIdEnchere(rs.getInt("idenchere"));
+            allimage.add(image);
+        }
+        return allimage;
+    }
+
+    @Transient
+    public List<ImageEnchereA> getAllimage() {
+        return allimage;
+    }
+
+    public void setAllimage(List<ImageEnchereA> allimage) {
+        this.allimage = allimage;
+    }
 
     public Enchere() {
     }
@@ -86,22 +116,34 @@ public class Enchere {
         return false;
     }
 
-    public void actionFini(EnchereRepository erep, Timestamp fin) throws Exception {
+    public void actionFini(EnchereRepository erep, Timestamp fin, List<HistoriqueEnchere> allhist) throws Exception {
         this.statut = 1;
         erep.save(this);
+        System.out.println("enchere termine");
+        String requestEnchere = "Enchere " + this.getId() + " du produit " + this.getNomproduit() + " est fini";
         if (this.getUtilisateurgagnant() != null) {
-            System.out.println("misy user tokony hiova debut");
             SoldeUtilisateur s = new SoldeUtilisateur((int) this.getUtilisateurgagnant().getId(),
                     (this.getPrix() * (-1.0)), fin);
             SoldeUtilisateur.insertSoldeUtilisateur(s);
-            System.out.println("misy user tokony hiova fin");
+            requestEnchere += " et le gagnant est " + this.getUtilisateurgagnant().getNom() + " "
+                    + this.getUtilisateurgagnant().getPrenom();
 
         }
+        String requestidUser = HistoriqueEnchere.knowAllUser(allhist);
+        // String requestBody =
+        // "{\"app_id\":\"f43c166c-4351-40de-8114-d992abf563f4\",\"include_external_user_ids"
+        // + requestidUser + "\",\"contents\": {\"en\": \""
+        // + requestEnchere + " \"},\"name\": \"INTERNAL_CAMPAIGN_NAME\"}";
+        String requestBody = "{\"app_id\":\"f43c166c-4351-40de-8114-d992abf563f4\",\"included_segments\":[\"Subscribed Users\"],\"contents\": {\"en\": \""
+                + requestEnchere + " \"},\"name\": \"INTERNAL_CAMPAIGN_NAME\"}";
+        new SignalService().callWS(requestBody);
     }
 
-    public void setFini(EnchereRepository erep) throws Exception {
+    public void setFini(EnchereRepository erep, HistoriqueEnchereRepository hrep) throws Exception {
         if (this.checkFini()) {
-            this.actionFini(erep, datefin);
+            List<HistoriqueEnchere> allhist = hrep.findByEnchere((int) this.id);
+            this.actionFini(erep, datefin, allhist);
+
         }
     }
 
