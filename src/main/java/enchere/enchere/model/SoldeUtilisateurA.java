@@ -76,7 +76,7 @@ public class SoldeUtilisateurA {
             stat = co.prepareStatement(requete);
             stat.setInt(1, id);
 
-            stat.executeQuery();
+            solde = stat.executeQuery().getDouble(1);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
