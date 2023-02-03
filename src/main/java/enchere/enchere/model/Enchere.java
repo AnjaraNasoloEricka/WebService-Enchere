@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,9 +110,9 @@ public class Enchere {
     }
 
     public boolean checkFini() {
-        Date now = Date.valueOf(LocalDate.now());
-        Timestamp time = new Timestamp(now.getTime());
-        System.out.println("now" + now + " datefin" + this.getDatefin());
+        Instant currentTimeStamp = Instant.now();
+        Timestamp time = Timestamp.from(currentTimeStamp);
+        System.out.println("now" + time + " datefin" + this.getDatefin());
 
         if (time.getTime() >= this.getDatefin().getTime()) {
             System.out.println("checkFini");
