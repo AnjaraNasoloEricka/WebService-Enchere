@@ -136,8 +136,8 @@ public class Enchere {
         Instant currentTimeStamp = Instant.now();
         Timestamp time = this.getNowTimestamp();
         System.out.println("now" + time + " datefin" + this.getDatefin());
-
-        if (time.getTime() >= this.getDatefin().getTime()) {
+        long tohour = (3 * 3600) * 1000;
+        if ((time.getTime() + tohour) >= this.getDatefin().getTime()) {
             System.out.println("checkFiniVita oh");
             return true;
         }
