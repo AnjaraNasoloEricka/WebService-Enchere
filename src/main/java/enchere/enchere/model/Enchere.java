@@ -296,6 +296,7 @@ public class Enchere {
                 temp.setUtilisateur(new Utilisateur(result.getInt("idutilisateur")));
                 temp.setNomproduit(result.getString("nomproduit"));
                 temp.setDatedebut(result.getTimestamp("datedebut"));
+                temp.setDatefin(result.getTimestamp("datefin"));
                 temp.setUtilisateurgagnant(new Utilisateur(result.getInt("idutilisateurgagnant")));
                 temp.setPrixmin(result.getDouble("prixmin"));
                 temp.setPrix(result.getDouble("prix"));
