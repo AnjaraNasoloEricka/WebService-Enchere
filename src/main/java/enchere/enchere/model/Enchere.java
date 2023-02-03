@@ -111,30 +111,9 @@ public class Enchere {
         this.categorie = categorie;
     }
 
-    public Timestamp getNowTimestamp() throws Exception {
-        String sql = "SELECT now() as current";
-        Connection co = null;
-        Timestamp t = null;
-        try {
-            co = Connexion.getConnection();
-            Statement stat = co.createStatement();
-            ResultSet result = stat.executeQuery(sql);
-            if (result.next()) {
-                t = result.getTimestamp("current");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            co.close();
-        }
-        return t;
-
-    }
-
     public boolean checkFini() throws Exception {
 
-        Instant currentTimeStamp = Instant.now();
-        Timestamp time = this.getNowTimestamp();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
         System.out.println("now" + time + " datefin" + this.getDatefin());
         long tohour = (3 * 3600) * 1000;
         if ((time.getTime() + tohour) >= this.getDatefin().getTime()) {
