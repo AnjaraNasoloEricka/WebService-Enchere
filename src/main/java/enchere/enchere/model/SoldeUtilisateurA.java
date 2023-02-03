@@ -74,7 +74,8 @@ public class SoldeUtilisateurA {
 
         try {
             co = Connexion.getConnection();
-            String sql = "SELECT SUM(solde) as somme FROM soldeutilisateur WHERE idutilisateur = ? AND statut = 1";
+            String sql = "SELECT SUM(solde) as somme FROM soldeutilisateur WHERE idutilisateur =" + id
+                    + " AND statut = 1";
             stat = co.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()) {
