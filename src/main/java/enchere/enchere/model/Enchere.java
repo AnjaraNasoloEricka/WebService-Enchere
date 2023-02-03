@@ -111,9 +111,30 @@ public class Enchere {
         this.categorie = categorie;
     }
 
-    public boolean checkFini() {
-        Instant currentTimeStamp = Instant.now().atZone(ZoneId.of("Africa/Nairobi")).toInstant();
-        Timestamp time = Timestamp.from(currentTimeStamp);
+    public Timestamp getNowTimestamp() throws Exception {
+        String sql = "SELECT now() as current";
+        Connection co = null;
+        Timestamp t = null;
+        try {
+            co = Connexion.getConnection();
+            Statement stat = co.createStatement();
+            ResultSet result = stat.executeQuery(sql);
+            if (result.next()) {
+                t = result.getTimestamp("current");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            co.close();
+        }
+        return t;
+
+    }
+
+    public boolean checkFini() throws Exception {
+
+        Instant currentTimeStamp = Instant.now();
+        Timestamp time = this.getNowTimestamp();
         System.out.println("now" + time + " datefin" + this.getDatefin());
 
         if (time.getTime() >= this.getDatefin().getTime()) {
