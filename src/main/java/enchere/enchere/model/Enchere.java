@@ -204,13 +204,15 @@ public class Enchere {
     public String setSQLwithDate(String sql, Date[] date) {
         if (date != null) {
             for (int i = 0; i < date.length; i++) {
-                sql += " and datedebut";
-                if (i == 0) {
-                    sql += ">=";
-                } else {
-                    sql += "<=";
+                if (date[i] != null) {
+                    sql += " and datedebut";
+                    if (i == 0) {
+                        sql += ">=";
+                    } else {
+                        sql += "<=";
+                    }
+                    sql += "'" + date[i].toString() + "'";
                 }
-                sql += "'" + date[i].toString() + "'";
             }
         }
         return sql;
