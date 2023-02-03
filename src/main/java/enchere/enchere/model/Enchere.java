@@ -110,7 +110,9 @@ public class Enchere {
 
     public boolean checkFini() {
         Date now = Date.valueOf(LocalDate.now());
-        if (now.after(this.getDatefin())) {
+        System.out.println("now" + now + " datefin" + this.getDatefin());
+
+        if (now.getTime() >= this.getDatefin().getTime()) {
             return true;
         }
         return false;
