@@ -117,7 +117,7 @@ public class Enchere {
         System.out.println("now" + time + " datefin" + this.getDatefin());
 
         if (time.getTime() >= this.getDatefin().getTime()) {
-            System.out.println("checkFini");
+            System.out.println("checkFiniVita oh");
             return true;
         }
         return false;
