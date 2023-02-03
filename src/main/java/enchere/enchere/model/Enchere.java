@@ -7,6 +7,8 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,7 +112,7 @@ public class Enchere {
     }
 
     public boolean checkFini() {
-        Instant currentTimeStamp = Instant.now();
+        Instant currentTimeStamp = Instant.now().atZone(ZoneId.of("Africa/Nairobi")).toInstant();
         Timestamp time = Timestamp.from(currentTimeStamp);
         System.out.println("now" + time + " datefin" + this.getDatefin());
 
