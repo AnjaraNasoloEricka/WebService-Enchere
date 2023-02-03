@@ -114,6 +114,7 @@ public class Enchere {
         System.out.println("now" + now + " datefin" + this.getDatefin());
 
         if (time.getTime() >= this.getDatefin().getTime()) {
+            System.out.println("checkFini");
             return true;
         }
         return false;
